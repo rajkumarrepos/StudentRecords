@@ -1,7 +1,8 @@
 package com.spring.Energy.services.markregservice;
 
 import com.spring.Energy.entity.StudentsMarks;
-import com.spring.Energy.repository.studentmarkrepo.StudentMarkRepo;
+import com.spring.Energy.repository.StudentMarkRepo;
+import com.spring.Energy.services.MarkListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @SpringBootTest
 class MarkListServiceTest {
@@ -24,17 +24,16 @@ class MarkListServiceTest {
     void setUp() {
         StudentsMarks studentsMarks=
         StudentsMarks.builder()
-                .studentRegId(922512110328L)
-                .studentName("rajkumar")
-                .tamilMark(55)
-                .englishMark(34)
-                .scienceMark(56)
-                .socialMark(23)
-                .totalMark(450)
+                .studentRollNo(922512110328L)
+                .tamil(55)
+                .english(34)
+                .science(56)
+                .social(23)
+                .total(450)
                 .build();
-        Mockito.when(studentMarkRepo.existsByStudentRegId(922512110328L))
+        Mockito.when(studentMarkRepo.existsByStudentRollNo(922512110328L))
                 .thenReturn(true);
-        Mockito.when(studentMarkRepo.findByStudentRegId(922512110328L))
+        Mockito.when(studentMarkRepo.findByStudentRollNo(922512110328L))
                 .thenReturn(studentsMarks);
     }
     @Test

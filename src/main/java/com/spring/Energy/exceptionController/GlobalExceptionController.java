@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus
 public class GlobalExceptionController {
     @ExceptionHandler(value = CustomException.class)
-    public ResponseEntity<Object> exception(CustomException exception) {
-        String b =exception.getErrCode()+" "+exception.getErrMessage();
+    public ResponseEntity<?> exception(CustomException exception) {
+        String message ="Error Code"+" "+exception.getErrCode()+"---------> Error Message: "+exception.getErrMessage();
 
-        return new ResponseEntity<>(b, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 
     }
 
