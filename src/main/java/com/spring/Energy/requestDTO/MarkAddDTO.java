@@ -22,5 +22,7 @@ public class MarkAddDTO {
 
     private Integer social;
 
+    private Integer studentStd;
+
 
 }

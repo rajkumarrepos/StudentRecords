@@ -1,5 +1,6 @@
 package com.spring.Energy.serviceImpl;
 
+import com.spring.Energy.conversion.Conversion;
 import com.spring.Energy.requestDTO.MarkAddDTO;
 import com.spring.Energy.responseDTO.StudentsMarkRecordDTO;
 import com.spring.Energy.requestDTO.UpdateStudentsMarkDTO;
@@ -28,6 +29,7 @@ public class MarkListServiceIMPL implements MarkListService {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formatDateTime = now.format(format);
+
         if ((markAddDTO.getStudentRollNo().toString().length() == 12) != (studentMarkRepo.existsByStudentRollNo(markAddDTO.getStudentRollNo()))) {
             if ((markAddDTO.getTamil() <= 100) && (markAddDTO.getEnglish() <= 100) && (markAddDTO.getMaths() <= 100) && (markAddDTO.getScience() <= 100) && (markAddDTO.getSocial() <= 100)) {
                 StudentsMarks studentsMarks = new StudentsMarks();
@@ -37,7 +39,9 @@ public class MarkListServiceIMPL implements MarkListService {
                 studentsMarks.setMaths(markAddDTO.getMaths());
                 studentsMarks.setScience(markAddDTO.getScience());
                 studentsMarks.setSocial(markAddDTO.getSocial());
+                studentsMarks.setTotal(markAddDTO.getTamil()+markAddDTO.getEnglish()+markAddDTO.getMaths()+markAddDTO.getScience()+markAddDTO.getSocial());
                 studentsMarks.setCreatedDateTime(formatDateTime);
+                studentsMarks.setStudentStd(Conversion.conversionOfNum(markAddDTO.getStudentStd()));
 
                 studentMarkRepo.save(studentsMarks);
                 return studentsMarks;
@@ -62,7 +66,8 @@ public class MarkListServiceIMPL implements MarkListService {
         for(StudentsMarks a:list){
             StudentsMarkRecordDTO studentsRecordDTO = new StudentsMarkRecordDTO(
                     a.getStudentRollNo(),a.getTamil(),a.getEnglish(),
-                    a.getMaths(),a.getScience(),a.getSocial(),a.getCreatedDateTime()
+                    a.getMaths(),a.getScience(),a.getSocial(),a.getCreatedDateTime(),
+                    a.getStudentStd()
             );
             fullList.add(studentsRecordDTO);
 
@@ -71,13 +76,13 @@ public class MarkListServiceIMPL implements MarkListService {
          return fullList;
     }
     @Override
-    public  ResponseEntity<StudentsMarks> updateStudentsList(Long studentRegId, UpdateStudentsMarkDTO updateStudentsMarkDTO){
+    public  ResponseEntity<StudentsMarks> updateStudentsList(Long studentRollNo, UpdateStudentsMarkDTO updateStudentsMarkDTO){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formatDateTime = now.format(format);
 
-        if(studentMarkRepo.existsByStudentRollNo(studentRegId)){
-          StudentsMarks studentsMarks =studentMarkRepo.findByStudentRollNo(studentRegId);
+        if(studentMarkRepo.existsByStudentRollNo(studentRollNo)){
+          StudentsMarks studentsMarks =studentMarkRepo.findByStudentRollNo(studentRollNo);
             //BeanUtils.copyProperties(updateStudentsDTO, studentsMarks);
 
                 studentsMarks.setTamil(updateStudentsMarkDTO.getTamil());
@@ -86,6 +91,7 @@ public class MarkListServiceIMPL implements MarkListService {
             studentsMarks.setSocial(updateStudentsMarkDTO.getSocial());
             studentsMarks.setTotal(updateStudentsMarkDTO.getEnglish()+ updateStudentsMarkDTO.getEnglish()+ updateStudentsMarkDTO.getMaths()+ updateStudentsMarkDTO.getScience()+ updateStudentsMarkDTO.getSocial());
             studentsMarks.setUpdateDateTime(formatDateTime);
+            studentsMarks.setStudentStd(Conversion.conversionOfNum(updateStudentsMarkDTO.getStudentStd()));
 
                        studentMarkRepo.save(studentsMarks);
                        return ResponseEntity.ok(studentsMarks);
@@ -95,11 +101,11 @@ public class MarkListServiceIMPL implements MarkListService {
 
 
     @Override
-    public Long  deleteStd(Long studentRegId){
-        if(studentMarkRepo.existsByStudentRollNo(studentRegId)){
-            StudentsMarks ms =studentMarkRepo.findByStudentRollNo((studentRegId));
-            studentMarkRepo.delete(ms);
-            return studentRegId;
+    public Long  deleteStd(Long studentRollNo){
+        if(studentMarkRepo.existsByStudentRollNo(studentRollNo)){
+            StudentsMarks deleted =studentMarkRepo.findByStudentRollNo((studentRollNo));
+            studentMarkRepo.delete(deleted);
+            return studentRollNo;
 
         }
         else{
@@ -107,8 +113,8 @@ public class MarkListServiceIMPL implements MarkListService {
         }
     }
     @Override
-    public StudentsMarks getName(String name){
-        StudentsMarks studentsMarks =studentMarkRepo.getStudentName(name);
+    public StudentsMarks getRollNo(Long studentDetail){
+        StudentsMarks studentsMarks =studentMarkRepo.findByStudentRollNo(studentDetail);
         return studentsMarks;
     }
 }

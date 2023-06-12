@@ -3,8 +3,8 @@ package com.spring.Energy.conversion;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Conversion implements Conversions {
-    public String conversionOfNum(int num) {
+public class Conversion {
+    public static String conversionOfNum(int num) {
         switch (num) {
             case 1:
                 return "I";

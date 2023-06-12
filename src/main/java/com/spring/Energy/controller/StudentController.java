@@ -22,35 +22,35 @@ public class StudentController {
 
   @PostMapping(value = "/register")
   public Student register(@RequestBody RegisterDTO registerDTO){
-      Student a =studentRegisterService.addStudent(registerDTO);
-             return a;
+      Student registerObject =studentRegisterService.addStudent(registerDTO);
+             return registerObject;
     }
-    @GetMapping(path = "/getallstudents")
+    @GetMapping(path = "/get")
     public List<StudentsDTO> getAllCustomer()
     {
         List<StudentsDTO> recordFile= studentRegisterService.studentDetails();
         return recordFile;
     }
-    @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Student> update(@PathVariable(value ="id") Long studentID,@RequestBody UpdateDTO updateDTO){
-        ResponseEntity<Student> upList=studentRegisterService.updateList( studentID,updateDTO);
+    @PutMapping(value = "/update/{rollNo}")
+    public ResponseEntity<Student> update(@PathVariable(value ="rollNo") Long studentRollNo,@RequestBody UpdateDTO updateDTO){
+        ResponseEntity<Student> upList=studentRegisterService.updateList( studentRollNo,updateDTO);
       return upList;
   }
-  @DeleteMapping(path="/delete-student/{id}")
-  public ResponseEntity<HttpStatus> delete(@PathVariable(value ="id") Long studentID){
-      ResponseEntity<HttpStatus>  b= studentRegisterService.deleteStudent(studentID);
-     return b;
+  @DeleteMapping(path="/{rollNo}")
+  public ResponseEntity<HttpStatus> delete(@PathVariable(value ="rollNo") Long studentRollNo){
+      ResponseEntity<HttpStatus>  deletedStudent= studentRegisterService.deleteStudent(studentRollNo);
+     return deletedStudent;
     }
-    @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long studentID){
-        ResponseEntity<Student> h=studentRegisterService.get(studentID);
-        return  h;
+    @GetMapping("/{rollNo}")
+    public ResponseEntity<Student> get(@PathVariable(value ="rollNo") Long studentRollNo){
+        ResponseEntity<Student> studentResponseEntity =studentRegisterService.get(studentRollNo);
+        return  studentResponseEntity;
     }
     @GetMapping("/search/{name}")
     public List<StudentsDTO> byNameSearch(@PathVariable(value = "name") String name){
       log.info("Student Name ---> {} {}", name);
-        List<StudentsDTO>  s =studentRegisterService.byNameSearch(name);
-        return s;
+        List<StudentsDTO>  studentList =studentRegisterService.byNameSearch(name);
+        return studentList;
     }
 
 }

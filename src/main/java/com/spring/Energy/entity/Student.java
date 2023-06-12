@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -20,7 +22,7 @@ public class Student {
     @Column(name="student_id")
     private Long studentId;
 
-    @Column(name = "student_roll_id", length = 10)
+    @Column(name = "student_roll_no", length = 10,nullable = false)
     private Long studentRollNo;
 
     @Column(name = "student_name", length = 50)
@@ -32,7 +34,10 @@ public class Student {
     @Column(name="mobile_no",length = 10)
     private Long mobileNo;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<StudentsMarks> studentsMarks;
+
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private StudentsMarks studentsMarks;
+    private Address address;
 
 }

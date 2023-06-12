@@ -20,4 +20,6 @@ public class UpdateStudentsMarkDTO {
     private Integer science;
 
     private Integer social;
+
+    private Integer studentStd;
 }

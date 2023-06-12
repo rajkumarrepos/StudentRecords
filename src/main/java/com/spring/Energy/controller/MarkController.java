@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("api/v1/students/mark")
 public class MarkController {
     @Autowired
-    private StudentMarkRepo studentMarkRepo;
-    @Autowired
     private MarkListService markListService;
 
 
@@ -28,30 +26,30 @@ public class MarkController {
                 StudentsMarks studentsMarks = markListService.markRegistering(markAddDTO);
                 return studentsMarks;
     }
-    @GetMapping(value ="/getallstudents")
+    @GetMapping(value ="/get")
     public List<StudentsMarkRecordDTO> studentDetails(){
-        List<StudentsMarkRecordDTO> w =markListService.studentDetails();
-        return w;
+        List<StudentsMarkRecordDTO> studenetMarkList =markListService.studentDetails();
+        return studenetMarkList ;
 
     }
 
-    @PutMapping(value="/update/{id}")
-    public ResponseEntity<StudentsMarks> update(@PathVariable (value = "id") Long studentRegId, @RequestBody UpdateStudentsMarkDTO updateStudentsMarkDTO){
+    @PutMapping(value="/update/{rollNo}")
+    public ResponseEntity<StudentsMarks> update(@PathVariable (value = "rollNo") Long studentRollNo, @RequestBody UpdateStudentsMarkDTO updateStudentsMarkDTO){
 
-           ResponseEntity<StudentsMarks> gv = markListService.updateStudentsList(studentRegId, updateStudentsMarkDTO);
-           return gv;
-
-    }
-
-    @DeleteMapping(value ="/delete/{id}")
-    public Long deleteStudent(@PathVariable(value = "id") Long studentRollNo){
-        Long ty =markListService.deleteStd(studentRollNo);
-        return ty;
+           ResponseEntity<StudentsMarks> updatedStudentMarkDetails = markListService.updateStudentsList(studentRollNo, updateStudentsMarkDTO);
+           return updatedStudentMarkDetails;
 
     }
-    @GetMapping("/{name}")
-    public StudentsMarks getStudentName(@PathVariable(value="name") String name){
-        StudentsMarks stdName =markListService.getName(name);
-        return stdName;
+
+    @DeleteMapping(value ="/delete/{rollNo}")
+    public Long deleteStudent(@PathVariable(value = "rollNo") Long studentRollNo){
+        Long deletedRollNo =markListService.deleteStd(studentRollNo);
+        return deletedRollNo;
+
+    }
+    @GetMapping("/{rollNo}")
+    public StudentsMarks getStudentName(@PathVariable(value="rollNo") Long studentRollNo){
+        StudentsMarks stdDetail =markListService.getRollNo(studentRollNo);
+        return stdDetail;
     }
 }

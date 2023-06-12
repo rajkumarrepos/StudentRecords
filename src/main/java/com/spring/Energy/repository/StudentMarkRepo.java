@@ -15,8 +15,11 @@ public interface StudentMarkRepo extends JpaRepository<StudentsMarks,Long> {
     boolean existsByStudentRollNo(Long studentRegId);
 
     StudentsMarks findByStudentRollNo(Long studentRollNo);
-    @Query(value="SELECT * FROM student_mark_registry1 s WHERE s.student_name=:name",nativeQuery = true)
-    StudentsMarks getStudentName(String name);
+
+
+
+     // @Query(value="SELECT * FROM student_mark_registry1  WHERE student_name=:name",nativeQuery = true)
+     // StudentsMarks getStudentName(String name);
 
 
 

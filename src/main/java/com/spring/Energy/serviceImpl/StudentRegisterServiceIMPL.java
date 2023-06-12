@@ -1,6 +1,7 @@
 package com.spring.Energy.serviceImpl;
 
-import com.spring.Energy.conversion.Conversions;
+import com.spring.Energy.conversion.Conversion;
+import com.spring.Energy.entity.StudentsMarks;
 import com.spring.Energy.requestDTO.RegisterDTO;
 import com.spring.Energy.responseDTO.StudentsDTO;
 import com.spring.Energy.requestDTO.UpdateDTO;
@@ -9,30 +10,45 @@ import com.spring.Energy.entity.Student;
 import com.spring.Energy.exception.ResourceNotFoundException;
 import com.spring.Energy.repository.StudentRepo;
 import com.spring.Energy.services.StudentRegisterService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.*;
-
+@Slf4j
 @Service
 public class StudentRegisterServiceIMPL implements StudentRegisterService {
     @Autowired
     private StudentRepo studentRepo;
-    @Autowired
-    private Conversions conversions;
 
     @Override
     public Student addStudent(RegisterDTO registerDTO) {
+        StudentsMarks studentsMarks=new StudentsMarks();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formatDateTime = now.format(format);
+
+     //   studentsMarks.setStudentRollNo(registerDTO.getMarkAddDTO().getStudentRollNo());
+
+        BeanUtils.copyProperties(registerDTO.getMarkAddDTO(),studentsMarks);
+        studentsMarks.setCreatedDateTime(formatDateTime);
+        studentsMarks.setTotal(registerDTO.getMarkAddDTO().getTamil()+registerDTO.getMarkAddDTO().getEnglish()+registerDTO.getMarkAddDTO().getMaths()+registerDTO.getMarkAddDTO().getScience()+registerDTO.getMarkAddDTO().getSocial());
+        studentsMarks.setStudentStd(Conversion.conversionOfNum(registerDTO.getMarkAddDTO().getStudentStd()));
+
 
 
         Student student = new Student();
                 student.setStudentRollNo(registerDTO.getStudentRollNo());
                 student.setStudentName(registerDTO.getStudentName());
-                student.setStudentStd(conversions.conversionOfNum(registerDTO.getStudentStd()));
-                student.setStudentId(registerDTO.getMobileNo());
+                student.setStudentStd(Conversion.conversionOfNum(registerDTO.getStudentStd()));
+                student.setMobileNo(registerDTO.getMobileNo());
+                student.setStudentsMarks(studentsMarks);
               studentRepo.save(student);
         return student;
     }
@@ -56,15 +72,14 @@ public class StudentRegisterServiceIMPL implements StudentRegisterService {
     }
 
     @Override
-    public ResponseEntity<Student> updateList(Long studentID, UpdateDTO updateDTO) {
+    public ResponseEntity<Student> updateList(Long studentRollNo, UpdateDTO updateDTO) {
 
 
-        Student upstudent = studentRepo.findById(studentID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " +studentID));
+        Student upstudent = studentRepo.getStudentRollNo(studentRollNo)
+               .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: "));
 
-        upstudent.setStudentId(studentID);
         upstudent.setStudentName(updateDTO.getStudentName());
-        upstudent.setStudentStd(conversions.conversionOfNum(updateDTO.getStudentStd()));
+        upstudent.setStudentStd(Conversion.conversionOfNum(updateDTO.getStudentStd()));
         upstudent.setMobileNo(updateDTO.getMobileNo());
         studentRepo.save(upstudent);
 
@@ -72,10 +87,10 @@ public class StudentRegisterServiceIMPL implements StudentRegisterService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> deleteStudent(Long studentID) {
+    public ResponseEntity<HttpStatus> deleteStudent(Long studentRollNo) {
 
-        Student student= studentRepo.findById(studentID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + studentID));
+        Student student= studentRepo.getStudentRollNo(studentRollNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + studentRollNo));
         studentRepo.delete(student);
 
 
@@ -83,9 +98,9 @@ public class StudentRegisterServiceIMPL implements StudentRegisterService {
 
     }
     @Override
-    public ResponseEntity<Student> get(Long studentID){
-        Student student =studentRepo.findById(studentID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + studentID));;
+    public ResponseEntity<Student> get(Long studentRollNo){
+        Student student =studentRepo.getStudentRollNo(studentRollNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + studentRollNo));;
         return  ResponseEntity.ok(student) ;
     }
     @Override

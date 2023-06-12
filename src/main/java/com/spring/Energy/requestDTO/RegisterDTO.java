@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ToString
 public class RegisterDTO {
 
-    @Autowired
-    private Conversion conversion;
 
     private Long studentRollNo;
 
@@ -20,6 +18,8 @@ public class RegisterDTO {
     private Integer studentStd;
 
     private Long mobileNo;
+
+    private MarkAddDTO markAddDTO;
 
 
 

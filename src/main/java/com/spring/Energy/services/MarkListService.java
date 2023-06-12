@@ -12,6 +12,6 @@ public interface MarkListService {
     StudentsMarks markRegistering(MarkAddDTO markAddDTO);
     List<StudentsMarkRecordDTO> studentDetails();
     ResponseEntity<StudentsMarks> updateStudentsList(Long studentRegId, UpdateStudentsMarkDTO updateStudentsMarkDTO);
-    Long deleteStd(Long studentRollId);
-    StudentsMarks getName(String name);
+    Long deleteStd(Long studentRollNo);
+    StudentsMarks getRollNo(Long studentDetail);
 }

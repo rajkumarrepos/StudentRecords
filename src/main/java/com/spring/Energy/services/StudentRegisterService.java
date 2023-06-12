@@ -11,13 +11,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface StudentRegisterService {
+
     Student addStudent(RegisterDTO registerDTO);
 
 
 
     List<StudentsDTO> studentDetails();
     ResponseEntity<Student> updateList(Long studentID, UpdateDTO updateDTO);
-    ResponseEntity<HttpStatus> deleteStudent(Long studentID);
+    ResponseEntity<HttpStatus> deleteStudent(Long studentRollNo);
 
     ResponseEntity<Student> get(Long studentID);
 

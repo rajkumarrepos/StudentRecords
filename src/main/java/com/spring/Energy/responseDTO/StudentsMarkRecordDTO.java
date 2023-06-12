@@ -23,4 +23,6 @@ public class StudentsMarkRecordDTO {
     private Integer social;
 
     private String createdDateTime;
+
+    private String studentStd;
 }

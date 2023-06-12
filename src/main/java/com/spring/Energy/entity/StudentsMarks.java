@@ -23,7 +23,7 @@ public class StudentsMarks {
     @SequenceGenerator(name = "studMark_id", sequenceName = "studMark_seq", initialValue = 1, allocationSize = 1)
     private Long studentId;
 
-    @Column(name="student_roll_id")
+    @Column(name="student_roll_id",length = 12)
     private Long studentRollNo;
 
     @Column(name = "tamil_mark", length = 3)
@@ -49,6 +49,8 @@ public class StudentsMarks {
 
     @Column(name = "updated_date_time")
     private String updateDateTime;
+
+    private String studentStd;
 
 
 }
