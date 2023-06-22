@@ -3,6 +3,9 @@ package com.spring.Energy.requestDTO;
 import com.spring.Energy.conversion.Conversion;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -19,7 +22,7 @@ public class RegisterDTO {
 
     private Long mobileNo;
 
-    private MarkAddDTO markAddDTO;
+    private List<MarkAddDTO> markAddDTO;
 
 
 

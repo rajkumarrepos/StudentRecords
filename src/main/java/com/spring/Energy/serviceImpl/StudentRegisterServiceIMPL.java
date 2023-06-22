@@ -10,6 +10,7 @@ import com.spring.Energy.entity.Student;
 import com.spring.Energy.exception.ResourceNotFoundException;
 import com.spring.Energy.repository.StudentRepo;
 import com.spring.Energy.services.StudentRegisterService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +22,36 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.*;
+
+import static org.apache.coyote.http11.Constants.a;
+
 @Slf4j
 @Service
+@Transactional
 public class StudentRegisterServiceIMPL implements StudentRegisterService {
     @Autowired
     private StudentRepo studentRepo;
 
     @Override
     public Student addStudent(RegisterDTO registerDTO) {
-        StudentsMarks studentsMarks=new StudentsMarks();
+
+        List<StudentsMarks> studentsMarks=new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formatDateTime = now.format(format);
 
-     //   studentsMarks.setStudentRollNo(registerDTO.getMarkAddDTO().getStudentRollNo());
+        registerDTO.getMarkAddDTO().stream().forEach(a -> {
+            StudentsMarks studentsMarks1=new StudentsMarks();
+            BeanUtils.copyProperties(a,studentsMarks1);
+        studentsMarks1.setCreatedDateTime(formatDateTime);
+        studentsMarks1.setTotal(studentsMarks1.getTamil()+studentsMarks1.getEnglish()+studentsMarks1.getMaths()+studentsMarks1.getScience()+studentsMarks1.getSocial());
+        studentsMarks1.setStudentStd(Conversion.conversionOfNum(a.getStudentStd()));
+            studentsMarks.add(studentsMarks1);
+        });
+         int a = studentsMarks.size();
+         System.out.println("----------------"+a);
 
-        BeanUtils.copyProperties(registerDTO.getMarkAddDTO(),studentsMarks);
-        studentsMarks.setCreatedDateTime(formatDateTime);
-        studentsMarks.setTotal(registerDTO.getMarkAddDTO().getTamil()+registerDTO.getMarkAddDTO().getEnglish()+registerDTO.getMarkAddDTO().getMaths()+registerDTO.getMarkAddDTO().getScience()+registerDTO.getMarkAddDTO().getSocial());
-        studentsMarks.setStudentStd(Conversion.conversionOfNum(registerDTO.getMarkAddDTO().getStudentStd()));
+
 
 
 
@@ -49,6 +61,7 @@ public class StudentRegisterServiceIMPL implements StudentRegisterService {
                 student.setStudentStd(Conversion.conversionOfNum(registerDTO.getStudentStd()));
                 student.setMobileNo(registerDTO.getMobileNo());
                 student.setStudentsMarks(studentsMarks);
+
               studentRepo.save(student);
         return student;
     }
