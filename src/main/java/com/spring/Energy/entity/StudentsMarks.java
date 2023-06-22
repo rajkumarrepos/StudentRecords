@@ -1,13 +1,14 @@
 package com.spring.Energy.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
-
+@Data
 @Entity
 @Builder
 @NoArgsConstructor(force = true)
@@ -15,41 +16,42 @@ import java.util.Locale;
 @ToString
 @Setter
 @Getter
-@Table(name ="student_mark_registry1")
+@Table(name ="student_mark_registry")
 public class StudentsMarks {
     @Id
-    @Column(name = "student_id", length = 5)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "studMark_id", strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "studMark_id", sequenceName = "studMark_seq", initialValue = 1, allocationSize = 1)
     private Long studentId;
 
-    @Column(name ="register_id",length =12 )
-    private Long studentRegId;
+    @Column(name="student_roll_id",length = 12)
+    private Long studentRollNo;
 
+    @Column(name = "tamil_mark", length = 3)
+    private Integer tamil;
 
-    @Column(name="student_name",length = 50)
-    private String studentName;
+    @Column(name = "english_mark", length = 3)
+    private Integer english;
 
-    @Column(name ="tamil_mark",length = 3)
-    private Integer tamilMark;
+    @Column(name = "maths_mark", length = 3)
+    private Integer maths;
 
-    @Column(name ="english_mark",length = 3)
-    private Integer englishMark;
+    @Column(name = "science_mark", length = 3)
+    private Integer science;
 
-    @Column(name="maths_mark",length = 3)
-    private Integer mathsMark;
+    @Column(name = "social_mark", length = 3)
+    private Integer social;
 
-    @Column(name ="science_mark",length = 3)
-    private Integer scienceMark;
+    @Column(name = "total_mark", length = 3)
+    private Integer total;
 
-    @Column(name="social_mark",length = 3)
-    private Integer socialMark;
-
-    @Column(name="total_mark",length = 3)
-    private Integer totalMark;
-
-    @Column (name="created_date_time")
+    @Column(name = "created_date_time")
     private String createdDateTime;
 
-    @Column(name="updated_date_time")
-    private String  updateDateTime;
+    @Column(name = "updated_date_time")
+    private String updateDateTime;
+
+    private String studentStd;
+
+
 }
+

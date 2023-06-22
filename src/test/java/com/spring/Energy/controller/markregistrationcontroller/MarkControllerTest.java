@@ -1,9 +1,10 @@
 package com.spring.Energy.controller.markregistrationcontroller;
 
-import com.spring.Energy.dto.studentmarklistDTO.MarkAddDTO;
+import com.spring.Energy.controller.MarkController;
+import com.spring.Energy.requestDTO.MarkAddDTO;
 import com.spring.Energy.entity.StudentsMarks;
-import com.spring.Energy.repository.studentmarkrepo.StudentMarkRepo;
-import com.spring.Energy.services.markregservice.MarkListService;
+import com.spring.Energy.repository.StudentMarkRepo;
+import com.spring.Energy.services.MarkListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,12 +13,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.RequestEntity.post;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,14 +41,13 @@ class MarkControllerTest {
         studentsMarks =
                 StudentsMarks.builder()
                         .studentId(1L)
-                        .studentRegId(922512110328L)
-                        .studentName("rajkumar")
-                        .tamilMark(55)
-                        .englishMark(34)
-                        .mathsMark(99)
-                        .scienceMark(56)
-                        .socialMark(23)
-                        .totalMark(450)
+                        .studentRollNo(922512110328L)
+                        .tamil(55)
+                        .english(34)
+                        .maths(99)
+                        .science(56)
+                        .social(23)
+                        .total(450)
                         .createdDateTime("23")
                         .updateDateTime("25")
                         .build();
@@ -61,13 +58,12 @@ class MarkControllerTest {
     void mark() throws Exception {
         MarkAddDTO markAddDTO=
                 new MarkAddDTO().builder()
-                        .studentRegId(922512110328L)
-                        .studentName("rajkumar")
-                        .tamilMark(10)
-                        .englishMark(34)
-                        .mathsMark(99)
-                        .scienceMark(56)
-                        .socialMark(23)
+                        .studentRollNo(922512110328L)
+                        .tamil(10)
+                        .english(34)
+                        .maths(99)
+                        .science(56)
+                        .social(23)
                         .build();
         Mockito.when(markController.mark( markAddDTO))
                         .thenReturn(studentsMarks);
@@ -86,12 +82,11 @@ class MarkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
                                 "\t\"studentRegId\":922512110320,\n" +
-                                "\t\"studentName\":\"rajkumar\",\n" +
-                                "\t\"tamilMark\":55,\n" +
-                                "\t\"englishMark\":34,\n" +
-                                "\t\"mathsMark\":99,\n" +
-                                "\t\"scienceMark\":56,\n" +
-                                "\t\"socialMark\":23 \n" +
+                                "\t\"tamil\":55,\n" +
+                                "\t\"english\":34,\n" +
+                                "\t\"maths\":99,\n" +
+                                "\t\"science\":56,\n" +
+                                "\t\"social\":23 \n" +
                                 "}"))
                              .andExpect(status().isOk());
 
